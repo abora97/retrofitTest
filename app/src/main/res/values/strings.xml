@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">RetrofitTest</string>
+    <string name="lode_data_from_web">lode data from web</string>
 </resources>
