@@ -22,6 +22,8 @@ public class MainActivity extends AppCompatActivity {
     String gitHub = "https://api.github.com/";
     String baseUrl = "https://jsonplaceholder.typicode.com/";
 
+    String news = "https://newsapi.org/v2/";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getRepo(view);
+                getNews(view);
             }
         });
 
@@ -73,6 +75,27 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void getNews(View view){
+        Retrofit retrofit=new  Retrofit.Builder().baseUrl(news).build();
+        GetApiCall getApiCall=retrofit.create(GetApiCall.class);
+        getApiCall.getNews("eg","e575345faedb4747abcd7742bf68dee0").enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    textView.setText(response.body().string());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
 
