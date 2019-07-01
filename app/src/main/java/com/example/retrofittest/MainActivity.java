@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.IOException;
 
@@ -23,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     String baseUrl = "https://jsonplaceholder.typicode.com/";
 
     String news = "https://newsapi.org/v2/";
+    String palceHolder = "https://jsonplaceholder.typicode.com/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getNews(view);
+                getPlaceHolder(view);
             }
         });
 
@@ -83,10 +85,10 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void getNews(View view){
-        Retrofit retrofit=new  Retrofit.Builder().baseUrl(news).build();
-        GetApiCall getApiCall=retrofit.create(GetApiCall.class);
-        getApiCall.getNews("eg","e575345faedb4747abcd7742bf68dee0").enqueue(new Callback<ResponseBody>() {
+    public void getNews(View view) {
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(news).build();
+        GetApiCall getApiCall = retrofit.create(GetApiCall.class);
+        getApiCall.getNews("eg", "e575345faedb4747abcd7742bf68dee0").enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -103,4 +105,23 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    void getPlaceHolder(View view) {
+        Retrofit retrofit = new Retrofit.Builder().baseUrl(palceHolder).build();
+        GetApiCall getApiCall = retrofit.create(GetApiCall.class);
+        getApiCall.getJsonPlaceHolder("mahmoud", "testPost", "1").enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                try {
+                    textView.setText(response.body().string());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Toast.makeText(MainActivity.this, "" + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 }
